@@ -1,45 +1,53 @@
 # GoutamkumarKoppolu.github.io
 
-Personal profile page for Goutam Kumar Koppolu — plain HTML/CSS/JS, no build step, no
-frameworks, no GitHub Actions. The Projects section pulls live from the GitHub REST API
-client-side, so it stays up to date automatically as new public repos are pushed.
+Personal profile page for Goutam Kumar Koppolu — React + TypeScript + Vite, styled with
+Tailwind CSS, animated with Framer Motion. The Projects section pulls live from the GitHub
+REST API client-side, so it stays current as new public repos are pushed.
 
-## Preview locally
+## Stack
 
-Just open `index.html` in a browser, or serve it so the GitHub API fetch behaves exactly
-like it will in production:
+- **React 19 + TypeScript**, componentized (`src/components/`)
+- **Tailwind CSS v4** for styling
+- **Framer Motion** for scroll reveals, staggered lists, hero entrance, hover/tap micro-interactions
+- **Vite** for dev/build
+- Resume content lives in one place: `src/data/resume.ts`
+
+## Develop locally
 
 ```bash
-python -m http.server 8000
-# then visit http://localhost:8000
+npm install
+npm run dev
 ```
 
-## Publish it on GitHub Pages (free)
+## Build
 
-This repo is named `GoutamkumarKoppolu.github.io`, which GitHub treats as a special
-**user site** — once it exists on GitHub with `index.html` at the root of the `main`
-branch, GitHub Pages serves it automatically at `https://GoutamkumarKoppolu.github.io`.
-No GitHub Actions workflow and no manual "enable Pages" step needed.
+```bash
+npm run build   # outputs static files to dist/
+npm run preview # serve the production build locally
+```
 
-1. Create a new **empty** repository on GitHub named exactly `GoutamkumarKoppolu.github.io`
-   (no README/license/gitignore — this folder already has everything).
-2. From inside this folder, point it at that repo and push:
-   ```bash
-   git remote add origin https://github.com/GoutamkumarKoppolu/GoutamkumarKoppolu.github.io.git
-   git branch -M main
-   git push -u origin main
-   ```
-3. Wait 1-2 minutes, then visit `https://GoutamkumarKoppolu.github.io`.
-4. If it doesn't appear: go to the repo's **Settings → Pages** and confirm the source is
-   set to `Deploy from a branch` → `main` / `(root)`.
+## Deploy — GitHub Pages via GitHub Actions (free)
+
+This repo is named `GoutamkumarKoppolu.github.io`, GitHub's special name for a **user site**
+served at `https://GoutamkumarKoppolu.github.io`. Because this app now has a build step, Pages
+needs to be told to deploy from the included GitHub Actions workflow
+(`.github/workflows/deploy.yml`) rather than serving the repo root directly.
+
+One-time setup, after this repo exists on GitHub with this code pushed to `main`:
+
+1. Go to the repo's **Settings → Pages**.
+2. Under **Build and deployment → Source**, choose **GitHub Actions** (not "Deploy from a branch").
+3. Push to `main` (or re-run the workflow from the **Actions** tab) — it builds and deploys
+   automatically. No manual step after that; every push to `main` redeploys.
+4. Visit `https://GoutamkumarKoppolu.github.io` once the workflow finishes (~1 minute).
 
 ## Notes
 
 - The Projects section calls `api.github.com/users/GoutamkumarKoppolu/repos` unauthenticated,
-  which is capped at 60 requests/hour **per visitor IP** — plenty for a personal page, but if
-  it ever shows the fallback message under heavy testing, that's why (it recovers within the
-  hour, no action needed).
-- Forked repos are excluded from the Projects list; the top 6 are picked by star count, then
-  most recently pushed.
-- To update resume content, edit the text directly in `index.html` — there's no data file or
-  build step.
+  capped at 60 requests/hour **per visitor IP** — plenty for a personal page; it shows a
+  graceful fallback message if the limit is hit or the fetch fails.
+- Forked repos are excluded from Projects; the top 6 shown are ranked by star count, then most
+  recently pushed.
+- Dark mode respects the OS preference by default and can be toggled manually (persisted via
+  `localStorage`) using the sun/moon button in the nav bar.
+- To update resume content, edit `src/data/resume.ts` — no need to touch component files.
