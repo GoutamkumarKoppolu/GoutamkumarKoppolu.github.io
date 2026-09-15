@@ -1,6 +1,9 @@
 export const profile = {
   name: "Venkata Sai Goutam Kumar Koppolu",
+  firstName: "Goutam",
   title: "Senior Backend Engineer",
+  tagline:
+    "I build high-performance backend systems and lead teams to ship them safely — currently expanding into generative AI application development.",
   location: "Ongole, India",
   email: "koppolugoutamkumar@gmail.com",
   linkedin: "https://linkedin.com/in/goutam-kumar-koppolu-89302913b",
@@ -52,15 +55,6 @@ export const experience: Job[] = [
     ],
   },
 ];
-
-export const skills = {
-  languages: [
-    { name: "Python", primary: true },
-    { name: "JavaScript" },
-    { name: "TypeScript" },
-  ],
-  frameworks: [{ name: "Node.js" }, { name: "Express" }, { name: "REST" }, { name: "GraphQL" }],
-};
 
 export const education = {
   degree: "B.Tech — Computer Science",

@@ -9,6 +9,7 @@ export type Repo = {
   stargazers_count: number;
   pushed_at: string;
   fork: boolean;
+  topics?: string[];
 };
 
 type State =
@@ -17,6 +18,12 @@ type State =
   | { status: "success"; repos: Repo[] };
 
 const MAX_PROJECTS = 6;
+
+const EXCLUDED_REPOS = new Set(
+  ["GoutamkumarKoppolu", "system-design-practice", "GoutamkumarKoppolu.github.io"].map((name) =>
+    name.toLowerCase(),
+  ),
+);
 
 export function useGithubRepos(username: string): State {
   const [state, setState] = useState<State>({ status: "loading" });
@@ -33,7 +40,7 @@ export function useGithubRepos(username: string): State {
 
         const data: Repo[] = await res.json();
         const ranked = data
-          .filter((repo) => !repo.fork)
+          .filter((repo) => !repo.fork && !EXCLUDED_REPOS.has(repo.name.toLowerCase()))
           .sort((a, b) => {
             if (b.stargazers_count !== a.stargazers_count) {
               return b.stargazers_count - a.stargazers_count;

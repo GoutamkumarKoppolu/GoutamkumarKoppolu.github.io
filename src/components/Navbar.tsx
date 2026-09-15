@@ -7,6 +7,7 @@ const SECTIONS = [
   { id: "skills", label: "Skills" },
   { id: "projects", label: "Projects" },
   { id: "education", label: "Education" },
+  { id: "contact", label: "Contact" },
 ];
 
 export function Navbar() {
@@ -31,12 +32,12 @@ export function Navbar() {
   }, []);
 
   return (
-    <div className="sticky top-0 z-50 border-b border-neutral-200/80 bg-white/80 backdrop-blur-md dark:border-neutral-800/80 dark:bg-[#0f1117]/80">
+    <div className="sticky top-0 z-50 border-b border-neutral-200/80 bg-[#fafafa]/80 backdrop-blur-md dark:border-neutral-800/80 dark:bg-[#13151c]/80">
       <nav className="mx-auto flex max-w-3xl items-center justify-between px-6 py-3">
-        <a href="#top" className="font-mono text-sm text-neutral-500 hover:text-[var(--color-accent)] dark:text-neutral-400">
-          gkk
+        <a href="#top" className="text-sm font-semibold text-neutral-700 hover:text-[var(--color-accent)] dark:text-neutral-300">
+          GK
         </a>
-        <div className="hidden gap-5 font-mono text-sm sm:flex">
+        <div className="hidden gap-5 text-sm sm:flex">
           {SECTIONS.map(({ id, label }) => (
             <a
               key={id}

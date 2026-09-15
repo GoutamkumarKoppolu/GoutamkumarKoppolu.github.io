@@ -63,13 +63,27 @@ export function Projects() {
               rel="noopener"
               variants={card}
               whileHover={{ y: -4 }}
-              className="flex flex-col gap-2 rounded-lg border border-neutral-200 bg-neutral-50 p-4 transition-colors hover:border-[var(--color-accent)] dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-[var(--color-accent-dark)]"
+              className="flex flex-col gap-3 rounded-xl border border-neutral-200 bg-white p-5 shadow-sm transition-colors hover:border-[var(--color-accent)] dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-[var(--color-accent-dark)]"
             >
               <h3 className="font-medium">{repo.name}</h3>
               <p className="flex-grow text-sm text-neutral-600 dark:text-neutral-400">
                 {repo.description ?? "No description provided."}
               </p>
-              <p className="flex gap-3 font-mono text-xs text-neutral-500 dark:text-neutral-500">
+
+              {repo.topics && repo.topics.length > 0 && (
+                <div className="flex flex-wrap gap-1.5">
+                  {repo.topics.slice(0, 4).map((topic) => (
+                    <span
+                      key={topic}
+                      className="rounded-full bg-[var(--color-accent-soft)] px-2 py-0.5 text-[11px] font-medium text-[var(--color-accent)] dark:bg-[var(--color-accent-soft-dark)] dark:text-[var(--color-accent-dark)]"
+                    >
+                      {topic}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              <p className="flex gap-3 text-xs text-neutral-500 dark:text-neutral-500">
                 {repo.language && <span>{repo.language}</span>}
                 {repo.stargazers_count > 0 && <span>★ {repo.stargazers_count}</span>}
               </p>
