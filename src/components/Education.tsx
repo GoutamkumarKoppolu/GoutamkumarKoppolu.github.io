@@ -29,13 +29,26 @@ export function Education() {
         <ul className="space-y-2">
           {certificates.map((cert) => (
             <li
-              key={cert}
-              className="flex items-center gap-3 rounded-xl border border-neutral-200 bg-white p-4 text-sm text-neutral-700 shadow-sm dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-300"
+              key={cert.name}
+              className="flex items-start gap-3 rounded-xl border border-neutral-200 bg-white p-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900"
             >
               <span className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-[var(--color-accent-soft)] text-[var(--color-accent)] dark:bg-[var(--color-accent-soft-dark)] dark:text-[var(--color-accent-dark)]">
                 <TbCertificate size={16} />
               </span>
-              {cert}
+              <div className="flex flex-1 flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                <div>
+                  <p className="text-sm font-medium text-neutral-800 dark:text-neutral-200">{cert.name}</p>
+                  <p className="text-sm text-neutral-500 dark:text-neutral-500">
+                    {cert.issuer}
+                    {cert.credentialId && (
+                      <span className="text-neutral-400 dark:text-neutral-600"> · ID: {cert.credentialId}</span>
+                    )}
+                  </p>
+                </div>
+                <p className="rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400">
+                  {cert.date}
+                </p>
+              </div>
             </li>
           ))}
         </ul>

@@ -63,4 +63,39 @@ export const education = {
   location: "Ongole",
 };
 
-export const certificates = ["AZ-900: Microsoft Azure Fundamentals"];
+export type Certificate = {
+  name: string;
+  issuer: string;
+  date: string;
+  credentialId?: string;
+};
+
+export const certificates: Certificate[] = [
+  {
+    name: "Certificate of Completion: Claude Code 101",
+    issuer: "Anthropic",
+    date: "Sep 2026",
+    credentialId: "ucjb2rpw74v4",
+  },
+  {
+    name: "Certificate of Completion: Claude 101",
+    issuer: "Anthropic",
+    date: "Aug 2026",
+    credentialId: "6sx6wqtom77n",
+  },
+  {
+    name: "Docker Essentials: A Developer Introduction",
+    issuer: "IBM",
+    date: "Feb 2022",
+  },
+  {
+    name: "Microsoft Certified: Azure Fundamentals",
+    issuer: "Microsoft",
+    date: "Jun 2021",
+  },
+  {
+    name: "Introduction to Cybersecurity",
+    issuer: "Cisco",
+    date: "Jul 2021",
+  },
+];
