@@ -64,7 +64,7 @@ function ProjectCard({ p }: { p: Project }) {
           ))}
           <small>{p.factNote}</small>
         </div>
-        <div className="stack">{p.stack.map((s) => <span key={s}>{s}</span>)}</div>
+        <div className="tech">{p.stack.map((s) => <span key={s}>{s}</span>)}</div>
         <div className="plinks">
           <a className="btn btn-p" href={p.action.href} target="_blank" rel="noopener"><Icon aria-hidden="true" />{p.action.label}</a>
           <a className="src" href={p.source} target="_blank" rel="noopener" aria-label={`${p.name} source code on GitHub (opens in new tab)`}><SiGithub aria-hidden="true" /><span>Source</span></a>
