@@ -1,60 +1,29 @@
-import { motion } from "framer-motion";
+import { SiGithub } from "react-icons/si";
+import { TbBrandLinkedin, TbFileText, TbMail } from "react-icons/tb";
 import { profile } from "../data/resume";
+import { useCopy } from "../hooks/useCopy";
 
 export function Hero() {
+  const { message, copy } = useCopy(profile.email);
   return (
-    <header id="top" className="pb-16 pt-20 sm:pt-28">
-      <div className="mx-auto max-w-3xl px-6">
-        <motion.span
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="mb-4 inline-block rounded-full bg-[var(--color-accent-soft)] px-3 py-1 text-sm font-medium text-[var(--color-accent)] dark:bg-[var(--color-accent-soft-dark)] dark:text-[var(--color-accent-dark)]"
-        >
-          {profile.title}
-        </motion.span>
-
-        <motion.h1
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="text-4xl font-semibold tracking-tight sm:text-5xl"
-        >
-          Hi, I'm {profile.firstName}.
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-4 max-w-xl text-lg leading-relaxed text-neutral-600 dark:text-neutral-400"
-        >
-          {profile.tagline}
-        </motion.p>
-
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.28 }}
-          className="mt-2 text-sm text-neutral-500 dark:text-neutral-500"
-        >
-          {profile.location}
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.36 }}
-          className="mt-8"
-        >
-          <a
-            href="#contact"
-            className="inline-flex items-center gap-2 rounded-full bg-[var(--color-accent)] px-5 py-2.5 text-sm font-medium text-white transition-transform hover:scale-[1.03] dark:bg-[var(--color-accent-dark)] dark:text-neutral-950"
-          >
-            Get in touch
-          </a>
-        </motion.div>
+    <section className="hero" id="about" data-s="about">
+      <p className="badge"><i className="dot" aria-hidden="true" />{profile.openTo}</p>
+      <h1 className="name">{profile.name}</h1>
+      <p className="roleline">{profile.title} <span>· {profile.roleNote}</span></p>
+      <p className="tag">{profile.tagline}</p>
+      <div className="ctas">
+        <a className="btn btn-p" href="#contact">Get in touch</a>
+        <a className="btn btn-s" href={profile.resume} target="_blank" rel="noopener"><TbFileText aria-hidden="true" />Résumé</a>
+        <div className="socials">
+          <a href={profile.github} target="_blank" rel="noopener" aria-label="GitHub (opens in new tab)"><SiGithub aria-hidden="true" /><span className="tip">GitHub</span></a>
+          <a href={profile.linkedin} target="_blank" rel="noopener" aria-label="LinkedIn (opens in new tab)"><TbBrandLinkedin aria-hidden="true" /><span className="tip">LinkedIn</span></a>
+          <button type="button" onClick={copy} aria-label="Copy email address">
+            <TbMail aria-hidden="true" />
+            <span className={`tip${message ? " show" : ""}`} aria-live="polite">{message || "Copy email"}</span>
+          </button>
+        </div>
       </div>
-    </header>
+      <a className="cue" href="#highlights"><i aria-hidden="true" />highlights</a>
+    </section>
   );
 }

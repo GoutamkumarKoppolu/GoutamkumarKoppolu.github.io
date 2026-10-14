@@ -1,58 +1,52 @@
-import { TbCertificate, TbSchool } from "react-icons/tb";
-import { Reveal } from "./Reveal";
-import { SectionHeading } from "./SectionHeading";
-import { certificates, education } from "../data/resume";
+import { certificates, education, issuers, type Certificate } from "../data/resume";
+import { Section } from "./Section";
+
+function IssuerLogo({ issuer, small }: { issuer: Certificate["issuer"]; small?: boolean }) {
+  const { icon: Icon, mono, color } = issuers[issuer];
+  return <span className={`ilogo${small ? " sm" : ""}`} style={{ background: color }} aria-hidden="true">{Icon ? <Icon /> : mono}</span>;
+}
+
+const credential = (c: Certificate) => c.credentialId ? <code className="id">ID {c.credentialId}</code> : c.code ? <code className="id">{c.code}</code> : null;
 
 export function Education() {
+  const anthropic = certificates.filter((c) => c.issuer === "Anthropic");
+  const others = certificates.filter((c) => c.issuer !== "Anthropic");
+  const issuerCount = new Set(certificates.map((c) => c.issuer)).size;
   return (
-    <section id="education" className="mx-auto max-w-3xl px-6 py-12">
-      <Reveal>
-        <SectionHeading>Education</SectionHeading>
-        <div className="flex items-start gap-4 rounded-xl border border-neutral-200 bg-white p-5 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
-          <span className="flex h-10 w-10 flex-none items-center justify-center rounded-full bg-[var(--color-accent-soft)] text-[var(--color-accent)] dark:bg-[var(--color-accent-soft-dark)] dark:text-[var(--color-accent-dark)]">
-            <TbSchool size={20} />
-          </span>
-          <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 flex-1">
-            <div>
-              <h3 className="font-medium">{education.degree}</h3>
-              <p className="text-sm text-neutral-500 dark:text-neutral-500">{education.school}</p>
-            </div>
-            <p className="rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400">
-              {education.period} · {education.location}
-            </p>
-          </div>
+    <Section id="education" group="projects" title="Education & certificates" sub="Where the foundations came from, and what I keep learning.">
+      <h3 className="sub-h">Education</h3>
+      <ol className="edu-tl">
+        {education.steps.map((s, i) => (
+          <li key={s.title} className={i === 0 ? "now" : undefined}>
+            <span className="node" aria-hidden="true" />
+            <p className="edu-t">{s.title}</p>
+            <p className="edu-m">{education.school} · {s.period}</p>
+          </li>
+        ))}
+      </ol>
+      <h3 className="sub-h">Certificates<span>{certificates.length} from {issuerCount} issuers</span></h3>
+      <div className="issuers">
+        <div className="iss focus">
+          <div className="iss-head"><IssuerLogo issuer="Anthropic" /><b>Anthropic</b><span>{anthropic.length} · 2026</span></div>
+          <ul>
+            {anthropic.map((c) => (
+              <li key={c.name}>
+                <span className="n">{c.name}{c.recent && <span className="new">new</span>}</span>
+                <span className="d">{c.date}</span>
+                {credential(c)}
+              </li>
+            ))}
+          </ul>
         </div>
-      </Reveal>
-
-      <Reveal delay={0.1} className="mt-8">
-        <SectionHeading>Certificates</SectionHeading>
-        <ul className="space-y-2">
-          {certificates.map((cert) => (
-            <li
-              key={cert.name}
-              className="flex items-start gap-3 rounded-xl border border-neutral-200 bg-white p-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900"
-            >
-              <span className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-[var(--color-accent-soft)] text-[var(--color-accent)] dark:bg-[var(--color-accent-soft-dark)] dark:text-[var(--color-accent-dark)]">
-                <TbCertificate size={16} />
-              </span>
-              <div className="flex flex-1 flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                <div>
-                  <p className="text-sm font-medium text-neutral-800 dark:text-neutral-200">{cert.name}</p>
-                  <p className="text-sm text-neutral-500 dark:text-neutral-500">
-                    {cert.issuer}
-                    {cert.credentialId && (
-                      <span className="text-neutral-400 dark:text-neutral-600"> · ID: {cert.credentialId}</span>
-                    )}
-                  </p>
-                </div>
-                <p className="rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400">
-                  {cert.date}
-                </p>
-              </div>
-            </li>
+        <div className="iss-col">
+          {others.map((c) => (
+            <div key={c.name} className="iss slim">
+              <div className="iss-head"><IssuerLogo issuer={c.issuer} small /><b>{issuers[c.issuer].name}</b><span>{c.date}</span></div>
+              <ul><li><span className="n">{c.name}</span>{credential(c)}</li></ul>
+            </div>
           ))}
-        </ul>
-      </Reveal>
-    </section>
+        </div>
+      </div>
+    </Section>
   );
 }

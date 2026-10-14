@@ -1,59 +1,58 @@
-import { useEffect, useState } from "react";
-import { ThemeToggle } from "./ThemeToggle";
+import { useRef, useState } from "react";
+import type { IconType } from "react-icons";
+import { TbBriefcase, TbCode, TbMail, TbStack2, TbUser } from "react-icons/tb";
+import { useScrollEffect } from "../hooks/useScrollEffect";
 
-const SECTIONS = [
-  { id: "summary", label: "Summary" },
-  { id: "experience", label: "Experience" },
-  { id: "skills", label: "Skills" },
-  { id: "projects", label: "Projects" },
-  { id: "education", label: "Education" },
-  { id: "contact", label: "Contact" },
+const LINKS: { id: string; label: string; icon: IconType }[] = [
+  { id: "about", label: "About", icon: TbUser },
+  { id: "experience", label: "Experience", icon: TbBriefcase },
+  { id: "skills", label: "Skills", icon: TbStack2 },
+  { id: "projects", label: "Projects", icon: TbCode },
+  { id: "contact", label: "Contact", icon: TbMail },
 ];
 
+// Desktop: each link's track fills as you read its sections (sections carry data-s="<link id>"). Phones: bottom tab bar.
 export function Navbar() {
-  const [active, setActive] = useState<string>("summary");
+  const [active, setActive] = useState("about");
+  const segs = useRef<(HTMLElement | null)[]>([]);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) setActive(entry.target.id);
-        }
-      },
-      { rootMargin: "-45% 0px -50% 0px", threshold: 0 },
-    );
+  useScrollEffect(() => {
+    const secs = [...document.querySelectorAll<HTMLElement>("main section[data-s]")];
+    if (!secs.length) return;
+    const mid = window.scrollY + window.innerHeight / 2;
+    const end = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
+    setActive((secs.filter((s) => s.offsetTop <= mid).pop() ?? secs[0]).dataset.s!);
+    LINKS.forEach(({ id }, i) => {
+      const g = secs.filter((s) => s.dataset.s === id);
+      if (!g.length || !segs.current[i]) return;
+      const top = g[0].offsetTop, last = g[g.length - 1], bot = last.offsetTop + last.offsetHeight;
+      segs.current[i]!.style.setProperty("--p", String(end ? 1 : Math.max(0, Math.min(1, (mid - top) / (bot - top)))));
+    });
+  });
 
-    for (const { id } of SECTIONS) {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    }
-
-    return () => observer.disconnect();
-  }, []);
+  const current = (id: string) => (active === id ? { className: "active", "aria-current": "location" as const } : {});
 
   return (
-    <div className="sticky top-0 z-50 border-b border-neutral-200/80 bg-[#fafafa]/80 backdrop-blur-md dark:border-neutral-800/80 dark:bg-[#13151c]/80">
-      <nav className="mx-auto flex max-w-3xl items-center justify-between px-6 py-3">
-        <a href="#top" className="text-sm font-semibold text-neutral-700 hover:text-[var(--color-accent)] dark:text-neutral-300">
-          GK
-        </a>
-        <div className="hidden gap-5 text-sm sm:flex">
-          {SECTIONS.map(({ id, label }) => (
-            <a
-              key={id}
-              href={`#${id}`}
-              className={
-                active === id
-                  ? "text-[var(--color-accent)] dark:text-[var(--color-accent-dark)]"
-                  : "text-neutral-500 transition-colors hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100"
-              }
-            >
+    <>
+      <nav className="nav" aria-label="Sections">
+        <a className="logo" href="#about">~/goutam</a>
+        <div className="links">
+          {LINKS.map(({ id, label }, i) => (
+            <a key={id} href={`#${id}`} {...current(id)}>
               {label}
+              <i className="seg"><b ref={(el) => { segs.current[i] = el; }} /></i>
             </a>
           ))}
         </div>
-        <ThemeToggle />
       </nav>
-    </div>
+      <nav className="dock" aria-label="Sections">
+        {LINKS.map(({ id, label, icon: Icon }) => (
+          <a key={id} href={`#${id}`} {...current(id)}>
+            <Icon aria-hidden="true" />
+            <span>{label}</span>
+          </a>
+        ))}
+      </nav>
+    </>
   );
 }
