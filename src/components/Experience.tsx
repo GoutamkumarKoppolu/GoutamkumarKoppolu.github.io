@@ -1,55 +1,61 @@
-import { motion } from "framer-motion";
-import { Reveal } from "./Reveal";
-import { SectionHeading } from "./SectionHeading";
-import { experience, type Job } from "../data/resume";
+import { useRef } from "react";
+import { experience } from "../data/resume";
+import { prefersReducedMotion, useScrollEffect } from "../hooks/useScrollEffect";
+import { Section } from "./Section";
 
-function JobCard({ job, index }: { job: Job; index: number }) {
-  return (
-    <motion.article
-      initial={{ opacity: 0, x: -16 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.45, delay: index * 0.1 }}
-      className="relative pb-8 pl-8 last:pb-0"
-    >
-      <span className="absolute left-0 top-0 bottom-0 w-px bg-neutral-200 dark:bg-neutral-800" />
-      <span className="absolute -left-[5px] top-6 h-[11px] w-[11px] rounded-full border-2 border-white bg-[var(--color-accent)] dark:border-[#13151c] dark:bg-[var(--color-accent-dark)]" />
-
-      <div className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
-        <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-          <div>
-            <h3 className="font-medium">{job.role}</h3>
-            <p className="text-sm text-neutral-500 dark:text-neutral-500">{job.org}</p>
-          </div>
-          <p className="rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400">
-            {job.period}
-            {job.location ? ` · ${job.location}` : ""}
-          </p>
-        </div>
-
-        <ul className="mt-3 space-y-2">
-          {job.bullets.map((bullet) => (
-            <li key={bullet} className="text-sm leading-relaxed text-neutral-700 dark:text-neutral-300">
-              {bullet}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </motion.article>
-  );
-}
+const docY = (el: Element) => el.getBoundingClientRect().top + window.scrollY;
 
 export function Experience() {
+  const tl = useRef<HTMLOListElement>(null);
+
+  // A packet rides the timeline to a reading point; each role pings, lights up and reveals as it arrives
+  useScrollEffect(() => {
+    const list = tl.current;
+    if (!list) return;
+    const fill = list.querySelector<HTMLElement>(".fill")!;
+    const top = docY(list) + 8, len = list.offsetHeight - 16;
+    const h = Math.max(0, Math.min(len, window.scrollY + window.innerHeight * 0.55 - top));
+    fill.style.height = `${h}px`;
+    fill.classList.toggle("done", h >= len);
+    fill.classList.toggle("empty", h <= 0);
+    list.querySelectorAll(".co").forEach((c) => c.classList.toggle("lit", docY(c) + 7 - top <= h));
+    list.querySelectorAll<HTMLElement>(".role").forEach((r) => {
+      const on = docY(r) + 26 - top <= h, was = r.classList.contains("lit");
+      r.classList.toggle("lit", on);
+      if (!on) return;
+      if (!r.classList.contains("in")) {
+        r.querySelectorAll<HTMLElement>(".bul li").forEach((li, i) => (li.style.transitionDelay = `${120 + i * 60}ms`));
+        r.classList.add("in");
+        r.parentElement!.querySelector(".co-head")!.classList.add("in");
+      }
+      if (!was && !prefersReducedMotion()) {
+        r.classList.remove("ping");
+        void r.offsetWidth; // restart the pulse animation
+        r.classList.add("ping");
+      }
+    });
+  });
+
   return (
-    <section id="experience" className="mx-auto max-w-3xl px-6 py-12">
-      <Reveal>
-        <SectionHeading>Experience</SectionHeading>
-      </Reveal>
-      <div>
-        {experience.map((job, i) => (
-          <JobCard key={job.role + job.period} job={job} index={i} />
+    <Section id="experience" group="experience" title="Experience" sub="4+ years building and running production backends.">
+      <ol className="tl" ref={tl}>
+        <li className="fill empty" aria-hidden="true"><i className="head" /></li>
+        {experience.map((c) => (
+          <li key={c.company} className={`co${c.current ? " now" : ""}`}>
+            <span className="node" aria-hidden="true" />
+            <div className="co-head"><h3>{c.company}</h3><span>{c.span}</span></div>
+            {c.roles.map((r) => (
+              <div key={r.role} className="role">
+                <p className="r-title">{r.role}{r.promoted && <span className="promo">promoted</span>}</p>
+                <p className="r-meta">{r.period}{r.place && ` · ${r.place}`}</p>
+                <ul className="bul">
+                  {r.bullets.map((b, i) => <li key={i} data-id={b.id} dangerouslySetInnerHTML={{ __html: b.html }} />)}
+                </ul>
+              </div>
+            ))}
+          </li>
         ))}
-      </div>
-    </section>
+      </ol>
+    </Section>
   );
 }

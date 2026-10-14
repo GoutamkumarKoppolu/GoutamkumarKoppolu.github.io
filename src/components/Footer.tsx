@@ -1,10 +1,13 @@
+import { TbArrowUp } from "react-icons/tb";
+import { profile } from "../data/resume";
+
 export function Footer() {
   return (
-    <footer className="border-t border-neutral-200 py-8 dark:border-neutral-800">
-      <div className="mx-auto max-w-3xl px-6">
-        <p className="font-mono text-xs text-neutral-500 dark:text-neutral-500">
-          © {new Date().getFullYear()} Goutam Kumar Koppolu — built with React, Tailwind CSS & Framer Motion, hosted on GitHub Pages.
-        </p>
+    <footer className="f1">
+      <div className="in">
+        <span>© {new Date().getFullYear()} {profile.name}</span>
+        <a href={profile.source} target="_blank" rel="noopener">Built with React &amp; Tailwind · source ↗</a>
+        <a className="totop" href="#about">Back to top <TbArrowUp aria-hidden="true" /></a>
       </div>
     </footer>
   );

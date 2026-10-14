@@ -1,16 +1,16 @@
 # GoutamkumarKoppolu.github.io
 
-Personal profile page for Goutam Kumar Koppolu — React + TypeScript + Vite, styled with
-Tailwind CSS, animated with Framer Motion. The Projects section pulls live from the GitHub
-REST API client-side, so it stays current as new public repos are pushed.
+Personal profile page for Goutam Kumar Koppolu — React + TypeScript + Vite, dark "terminal" design
+over an animated service-mesh background. Projects are hand-picked case studies; DigiLog's download
+count is fetched live from its GitHub releases.
 
 ## Stack
 
-- **React 19 + TypeScript**, componentized (`src/components/`)
-- **Tailwind CSS v4** for styling
-- **Framer Motion** for scroll reveals, staggered lists, hero entrance, hover/tap micro-interactions
+- **React 19 + TypeScript**, one component per section (`src/components/`)
+- **Tailwind CSS v4** (reset) plus the design's own stylesheet in `src/index.css`
+- Animations are plain CSS and canvas: the mesh, the scroll-linked timeline packet and project rails; all respect reduced motion
 - **Vite** for dev/build
-- Resume content lives in one place: `src/data/resume.ts`
+- All content lives in one place: `src/data/resume.ts`; the résumé PDF is `public/Goutam_Kumar_Koppolu_Resume.pdf`
 
 ## Develop locally
 

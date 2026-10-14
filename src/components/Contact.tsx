@@ -1,68 +1,43 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { TbBrandGithub, TbBrandLinkedin, TbCheck, TbMail } from "react-icons/tb";
-import { Reveal } from "./Reveal";
+import { useEffect, useState } from "react";
+import { TbBrandLinkedin, TbCopy, TbFileText, TbMail } from "react-icons/tb";
 import { profile } from "../data/resume";
+import { useCopy } from "../hooks/useCopy";
+import { Section } from "./Section";
 
-const socialLinks = [
-  { label: "LinkedIn", href: profile.linkedin, icon: TbBrandLinkedin, color: "#0a66c2" },
-  { label: "GitHub", href: profile.github, icon: TbBrandGithub, color: undefined },
-];
-
-function EmailButton() {
-  const [copied, setCopied] = useState(false);
-
-  async function handleClick() {
-    try {
-      await navigator.clipboard.writeText(profile.email);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // Clipboard access can fail (e.g. insecure context); the address is still shown.
-    }
-  }
-
-  return (
-    <motion.button
-      type="button"
-      onClick={handleClick}
-      whileHover={{ y: -3 }}
-      whileTap={{ scale: 0.97 }}
-      className="flex items-center gap-2 rounded-full border border-neutral-200 bg-white px-5 py-2.5 text-sm font-medium shadow-sm dark:border-neutral-800 dark:bg-neutral-900"
-    >
-      {copied ? <TbCheck size={18} color="#22c55e" /> : <TbMail size={18} color="#4f46e5" />}
-      {copied ? "Copied!" : profile.email}
-    </motion.button>
-  );
-}
+const indiaTime = () => new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Kolkata" });
 
 export function Contact() {
-  return (
-    <section id="contact" className="mx-auto max-w-3xl px-6 py-16">
-      <Reveal className="text-center">
-        <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">Let's work together</h2>
-        <p className="mx-auto mt-3 max-w-md text-neutral-600 dark:text-neutral-400">
-          Open to backend and GenAI engineering opportunities — reach out through any of these.
-        </p>
+  const { message, copy } = useCopy(profile.email);
+  const [time, setTime] = useState(indiaTime);
+  useEffect(() => {
+    const t = setInterval(() => setTime(indiaTime()), 30_000);
+    return () => clearInterval(t);
+  }, []);
 
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-          <EmailButton />
-          {socialLinks.map(({ label, href, icon: Icon, color }) => (
-            <motion.a
-              key={label}
-              href={href}
-              target="_blank"
-              rel="noopener"
-              whileHover={{ y: -3 }}
-              whileTap={{ scale: 0.97 }}
-              className="flex items-center gap-2 rounded-full border border-neutral-200 bg-white px-5 py-2.5 text-sm font-medium shadow-sm dark:border-neutral-800 dark:bg-neutral-900"
-            >
-              <Icon size={18} color={color} />
-              {label}
-            </motion.a>
-          ))}
+  return (
+    <Section id="contact" group="contact" title="Contact">
+      <div className="ct1">
+        <span className="badge"><i className="dot" aria-hidden="true" />{profile.openTo}</span>
+        <h3>Let's build something fast and reliable.</h3>
+        <p className="lead">I'm looking for senior backend or lead roles where performance and safe releases matter. The quickest way to reach me is email.</p>
+        <div className="mailrow">
+          <span className="mail">{profile.email}</span>
+          <button type="button" className="iconbtn" onClick={copy}>
+            <TbCopy aria-hidden="true" /><span>Copy</span>
+            <span className={`copied${message ? " show" : ""}`} aria-live="polite">{message}</span>
+          </button>
         </div>
-      </Reveal>
-    </section>
+        <div className="ctas">
+          <a className="btn btn-p" href={`mailto:${profile.email}`}><TbMail aria-hidden="true" />Email me</a>
+          <a className="btn btn-s" href={profile.linkedin} target="_blank" rel="noopener"><TbBrandLinkedin aria-hidden="true" />LinkedIn</a>
+          <a className="btn btn-s" href={profile.resume} target="_blank" rel="noopener"><TbFileText aria-hidden="true" />Résumé</a>
+        </div>
+        <div className="meta">
+          <span><b>based in</b> {profile.location}</span>
+          <span><b>local time</b> <time>{time}</time> IST</span>
+          <span><b>reply</b> usually within a day</span>
+        </div>
+      </div>
+    </Section>
   );
 }
