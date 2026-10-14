@@ -34,7 +34,7 @@ export function Contact() {
         </div>
         <div className="meta">
           <span><b>based in</b> {profile.location}</span>
-          <span><b>local time</b> <time>{time}</time> IST</span>
+          <span><b>local time</b> <time suppressHydrationWarning>{time}</time> IST</span>
           <span><b>reply</b> usually within a day</span>
         </div>
       </div>

@@ -11,6 +11,9 @@ count is fetched live from its GitHub releases.
 - Animations are plain CSS and canvas: the mesh, the scroll-linked timeline packet and project rails; all respect reduced motion
 - **Vite** for dev/build
 - All content lives in one place: `src/data/resume.ts`; the résumé PDF is `public/Goutam_Kumar_Koppolu_Resume.pdf`
+- SEO / AI search: `npm run build` pre-renders the page to static HTML (`scripts/prerender.mjs`) and generates JSON-LD
+  (Person, ProfilePage, FAQ), `llms.txt` and `sitemap.xml` from the same data. `public/robots.txt` allows search and
+  AI crawlers; `public/og.png` is the link-preview image. Canonical URL: `profile.site` in `resume.ts` and `index.html`.
 
 ## Develop locally
 

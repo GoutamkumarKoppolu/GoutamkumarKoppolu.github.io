@@ -17,7 +17,9 @@ import {
 import { TbApi, TbBrandAzure, TbBrandWindows, TbSql } from "react-icons/tb";
 
 export const profile = {
+  site: "https://goutamkoppolu.is-a.dev",
   name: "Goutam Kumar Koppolu",
+  fullName: "Venkata Sai Goutam Kumar Koppolu",
   title: "Senior Backend Engineer",
   roleNote: "Lead Developer at Dhan Technology Labs",
   tagline:
