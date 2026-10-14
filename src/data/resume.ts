@@ -59,7 +59,7 @@ export const experience: Company[] = [
         bullets: [
           { id: "b-perf", html: "Architected an event-driven system that cut API response times <mark>~85% (30s → under 4s)</mark>, improving user retention through faster home-screen loads on login." },
           { id: "b-deploy", html: "Designed and rolled out a portal-wide feature-flag system enabling <mark>zero-downtime deployments to 600k users</mark>, with safe experimentation and gradual rollouts to specific customer segments, without production redeploys." },
-          { id: "b-rel", html: "Resolved recurring Node.js production restarts by fixing faulty exception handling and process-killing listeners; added a top-level error listener that <mark>eliminated outages, reduced 5xx errors</mark> and improved stability." },
+          { id: "b-rel", html: "Found why our Node.js servers kept crashing and restarting in production, and fixed the root cause in how errors were handled, which <mark>eliminated outages and reduced failed requests (5xx errors)</mark>." },
           { html: "Drove cross-functional buy-in with stakeholders and clients, pitching architectural improvements and surfacing trade-offs to win approval for optimized system designs." },
         ],
       },
