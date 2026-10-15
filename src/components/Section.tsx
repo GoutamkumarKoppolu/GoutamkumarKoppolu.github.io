@@ -1,7 +1,7 @@
 import { useEffect, useRef, type ReactNode } from "react";
 
-// `group` is the nav link this section counts toward; the heading fades up once when first seen
-export function Section({ id, group, title, sub, children }: { id: string; group: string; title: string; sub?: string; children: ReactNode }) {
+// hideTitle keeps the heading for screen readers and search only. `group` is the nav link this section counts toward; the heading fades up once when first seen
+export function Section({ id, group, title, hideTitle, sub, children }: { id: string; group: string; title: string; hideTitle?: boolean; sub?: string; children: ReactNode }) {
   const ref = useRef<HTMLElement>(null);
   useEffect(() => {
     const el = ref.current!;
@@ -19,7 +19,7 @@ export function Section({ id, group, title, sub, children }: { id: string; group
   }, []);
   return (
     <section id={id} data-s={group} ref={ref}>
-      <h2 className="h2">{title}</h2>
+      <h2 className={hideTitle ? "sr-only" : "h2"}>{title}</h2>
       {sub && <p className="sub">{sub}</p>}
       {children}
     </section>

@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import type { IconType } from "react-icons";
-import { TbBriefcase, TbCode, TbMail, TbStack2, TbUser } from "react-icons/tb";
+import { TbBriefcase, TbCode, TbMail, TbMoon, TbStack2, TbSun, TbUser } from "react-icons/tb";
+import { profile } from "../data/resume";
 import { useScrollEffect } from "../hooks/useScrollEffect";
 
 const LINKS: { id: string; label: string; icon: IconType }[] = [
@@ -30,12 +31,20 @@ export function Navbar() {
     });
   });
 
+  // index.html applies the saved theme before paint; CSS picks the sun/moon icon from data-theme
+  const toggleTheme = () => {
+    const theme = document.documentElement.dataset.theme === "light" ? "dark" : "light";
+    document.documentElement.dataset.theme = theme;
+    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", theme === "light" ? "#F8FAFC" : "#0F172A");
+    try { localStorage.setItem("theme", theme); } catch { /* private mode: theme just isn't remembered */ }
+  };
+
   const current = (id: string) => (active === id ? { className: "active", "aria-current": "location" as const } : {});
 
   return (
     <>
       <nav className="nav" aria-label="Sections">
-        <a className="logo" href="#about">~/goutam</a>
+        <a className="logo" href="#about">{profile.name}</a>
         <div className="links">
           {LINKS.map(({ id, label }, i) => (
             <a key={id} href={`#${id}`} {...current(id)}>
@@ -44,6 +53,9 @@ export function Navbar() {
             </a>
           ))}
         </div>
+        <button type="button" className="theme" onClick={toggleTheme} aria-label="Switch between light and dark mode">
+          <TbSun className="sun" aria-hidden="true" /><TbMoon className="moon" aria-hidden="true" />
+        </button>
       </nav>
       <nav className="dock" aria-label="Sections">
         {LINKS.map(({ id, label, icon: Icon }) => (

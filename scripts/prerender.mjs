@@ -9,7 +9,7 @@ const vite = await createServer({ server: { middlewareMode: true }, appType: "cu
 try {
   const { default: App } = await vite.ssrLoadModule("/src/App.tsx");
   const d = await vite.ssrLoadModule("/src/data/resume.ts");
-  const { profile: p, highlights, experience, skillLayers, aiTools, projects, education, certificates, recommendations } = d;
+  const { profile: p, highlights, experience, caseStudy: cs, skillLayers, aiTools, projects, education, certificates, recommendations } = d;
   const text = (html) => html.replace(/<[^>]+>/g, "");
   const today = new Date().toISOString().slice(0, 10);
   const skills = [...skillLayers, aiTools].flatMap((l) => l.items.map((s) => s.name));
@@ -29,7 +29,7 @@ try {
     address: { "@type": "PostalAddress", addressLocality: "Ongole", addressRegion: "Andhra Pradesh", addressCountry: "IN" },
     worksFor: { "@type": "Organization", name: experience[0].company },
     alumniOf: { "@type": "CollegeOrUniversity", name: `Rajiv Gandhi University of Knowledge Technologies (${education.school})` },
-    knowsAbout: [...skills, "Backend engineering", "Event-driven architecture", "Feature flags", "API performance", "Generative AI"],
+    knowsAbout: [...skills, "Backend engineering", "Event-driven architecture", "Feature flags", "API performance"],
     hasCredential: certificates.map((c) => ({
       "@type": "EducationalOccupationalCredential",
       name: c.name,
@@ -76,6 +76,12 @@ try {
     "",
     "## Experience",
     ...experience.flatMap((c) => c.roles.flatMap((r) => [`### ${r.role}, ${c.company} (${r.period}${r.place ? `, ${r.place}` : ""})`, ...r.bullets.map((b) => `- ${text(b.html)}`), ""])),
+    `## Case study: ${cs.title}`,
+    `${cs.context}. ${cs.lead}`,
+    ...cs.rows.map(([pain, b, t]) => `- Problem: ${pain} Fix: ${b} ${t}`),
+    `Trade-off: ${cs.tradeoff}`,
+    `Result: ${text(cs.result)}`,
+    "",
     "## Skills",
     ...[...skillLayers, aiTools].map((l) => `- ${l.label}: ${l.items.map((s) => s.name + (s.primary ? " (primary)" : "")).join(", ")}`),
     "",
@@ -99,7 +105,7 @@ try {
     "",
     "## Links",
     `- [Website](${p.site})`,
-    `- [Résumé (PDF)](${p.site}${p.resume})`,
+    `- [Resume (PDF)](${p.site}${p.resume})`,
     `- [LinkedIn](${p.linkedin})`,
     `- [GitHub](${p.github})`,
     "",

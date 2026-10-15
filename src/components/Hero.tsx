@@ -1,5 +1,4 @@
-import { SiGithub } from "react-icons/si";
-import { TbBrandLinkedin, TbFileText, TbMail } from "react-icons/tb";
+import { TbBrandGithub, TbBrandLinkedin, TbFileText, TbMail } from "react-icons/tb";
 import { profile } from "../data/resume";
 import { useCopy } from "../hooks/useCopy";
 
@@ -10,12 +9,13 @@ export function Hero() {
       <p className="badge"><i className="dot" aria-hidden="true" />{profile.openTo}</p>
       <h1 className="name">{profile.name}</h1>
       <p className="roleline">{profile.title} <span>· {profile.roleNote}</span></p>
-      <p className="tag">{profile.tagline}</p>
+      {/* tagline stays plain text in the data (SEO uses it), so the highlight is added here */}
+      <p className="tag">{profile.tagline.split("4+ years").flatMap((t, i) => (i ? [<mark key={i}>4+ years</mark>, t] : [t]))}</p>
       <div className="ctas">
         <a className="btn btn-p" href="#contact">Get in touch</a>
-        <a className="btn btn-s" href={profile.resume} target="_blank" rel="noopener"><TbFileText aria-hidden="true" />Résumé</a>
+        <a className="btn btn-s" href={profile.resume} target="_blank" rel="noopener"><TbFileText aria-hidden="true" />Resume</a>
         <div className="socials">
-          <a href={profile.github} target="_blank" rel="noopener" aria-label="GitHub (opens in new tab)"><SiGithub aria-hidden="true" /><span className="tip">GitHub</span></a>
+          <a href={profile.github} target="_blank" rel="noopener" aria-label="GitHub (opens in new tab)"><TbBrandGithub aria-hidden="true" /><span className="tip">GitHub</span></a>
           <a href={profile.linkedin} target="_blank" rel="noopener" aria-label="LinkedIn (opens in new tab)"><TbBrandLinkedin aria-hidden="true" /><span className="tip">LinkedIn</span></a>
           <button type="button" onClick={copy} aria-label="Copy email address">
             <TbMail aria-hidden="true" />
@@ -23,7 +23,6 @@ export function Hero() {
           </button>
         </div>
       </div>
-      <a className="cue" href="#highlights"><i aria-hidden="true" />highlights</a>
     </section>
   );
 }

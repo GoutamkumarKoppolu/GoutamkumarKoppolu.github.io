@@ -1,8 +1,9 @@
-import { MeshBackground } from "./components/MeshBackground";
+import { DotGridBackground } from "./components/DotGridBackground";
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
 import { Highlights } from "./components/Highlights";
 import { Experience } from "./components/Experience";
+import { CaseStudy } from "./components/CaseStudy";
 import { Skills } from "./components/Skills";
 import { Projects } from "./components/Projects";
 import { Education } from "./components/Education";
@@ -13,13 +14,14 @@ import { Footer } from "./components/Footer";
 function App() {
   return (
     <>
-      <MeshBackground />
+      <DotGridBackground />
       <div className="site">
         <Navbar />
         <main>
           <Hero />
           <Highlights />
           <Experience />
+          <CaseStudy />
           <Skills />
           <Projects />
           <Education />

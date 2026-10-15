@@ -44,12 +44,13 @@ export function Experience() {
           <li key={c.company} className={`co${c.current ? " now" : ""}`}>
             <span className="node" aria-hidden="true" />
             <div className="co-head"><h3>{c.company}</h3><span>{c.span}</span></div>
+            {c.about && <p className="co-about">{c.about}</p>}
             {c.roles.map((r) => (
               <div key={r.role} className="role">
                 <p className="r-title">{r.role}{r.promoted && <span className="promo">promoted</span>}</p>
                 <p className="r-meta">{r.period}{r.place && ` · ${r.place}`}</p>
                 <ul className="bul">
-                  {r.bullets.map((b, i) => <li key={i} data-id={b.id} dangerouslySetInnerHTML={{ __html: b.html }} />)}
+                  {r.bullets.map((b, i) => <li key={i} dangerouslySetInnerHTML={{ __html: b.html }} />)}
                 </ul>
               </div>
             ))}
