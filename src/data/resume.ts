@@ -48,7 +48,7 @@ export const experience: Company[] = [
   {
     company: "Dhan Technology Labs",
     span: "09/2022 – Present",
-    about: "Service-based company. I lead the customer-facing application of a US-based internet service provider.",
+    about: "I lead the customer-facing application of a US-based internet service provider.",
     current: true,
     roles: [
       {
