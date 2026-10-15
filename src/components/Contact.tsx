@@ -30,7 +30,7 @@ export function Contact() {
         <div className="ctas">
           <a className="btn btn-p" href={`mailto:${profile.email}`}><TbMail aria-hidden="true" />Email me</a>
           <a className="btn btn-s" href={profile.linkedin} target="_blank" rel="noopener"><TbBrandLinkedin aria-hidden="true" />LinkedIn</a>
-          <a className="btn btn-s" href={profile.resume} target="_blank" rel="noopener"><TbFileText aria-hidden="true" />Résumé</a>
+          <a className="btn btn-s" href={profile.resume} target="_blank" rel="noopener"><TbFileText aria-hidden="true" />Resume</a>
         </div>
         <div className="meta">
           <span><b>based in</b> {profile.location}</span>

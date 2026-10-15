@@ -1,14 +1,14 @@
 # GoutamkumarKoppolu.github.io
 
 Personal profile page for Goutam Kumar Koppolu — React + TypeScript + Vite, dark "terminal" design
-over an animated service-mesh background. Projects are hand-picked case studies; DigiLog's download
+over an animated dot-grid background (light and dark themes). Projects are hand-picked case studies; DigiLog's download
 count is fetched live from its GitHub releases.
 
 ## Stack
 
 - **React 19 + TypeScript**, one component per section (`src/components/`)
 - **Tailwind CSS v4** (reset) plus the design's own stylesheet in `src/index.css`
-- Animations are plain CSS and canvas: the mesh, the scroll-linked timeline packet and project rails; all respect reduced motion
+- Animations are plain CSS and canvas: the dot grid and the scroll-linked timeline packet; all respect reduced motion
 - **Vite** for dev/build
 - All content lives in one place: `src/data/resume.ts`; the résumé PDF is `public/Goutam_Kumar_Koppolu_Resume.pdf`
 - SEO / AI search: `npm run build` pre-renders the page to static HTML (`scripts/prerender.mjs`) and generates JSON-LD

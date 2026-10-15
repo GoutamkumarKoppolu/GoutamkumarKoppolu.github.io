@@ -20,10 +20,10 @@ export const profile = {
   site: "https://goutamkoppolu.is-a.dev",
   name: "Goutam Kumar Koppolu",
   fullName: "Venkata Sai Goutam Kumar Koppolu",
-  title: "Senior Backend Engineer",
-  roleNote: "Lead Developer at Dhan Technology Labs",
+  title: "Lead Backend Developer",
+  roleNote: "Dhan Technology Labs",
   tagline:
-    "4+ years designing and running production backends for 600k active users. I build fast, event-driven APIs with Node.js and GraphQL, lead the teams that ship them safely, and I'm now bringing that experience to generative AI.",
+    "4+ years designing and running production backends for 600k active users. I build fast, event-driven APIs with Node.js and GraphQL, and lead the team that ships them safely.",
   openTo: "Open to backend & lead roles",
   location: "Ongole, India",
   email: "koppolugoutamkumar@gmail.com",
@@ -33,22 +33,22 @@ export const profile = {
   source: "https://github.com/GoutamkumarKoppolu/GoutamkumarKoppolu.github.io",
 };
 
-// Each highlight links to the Experience bullet that proves it (bullet `id`)
 export const highlights = [
-  { num: "~85%", label: "faster API responses", context: "30s → under 4s for home-screen loads on login", proof: "b-perf" },
-  { num: "0", label: "downtime deploys", context: "feature-flag rollouts with no production redeploys", proof: "b-deploy" },
-  { num: "600k", label: "active users served", context: "on the production systems I design and ship", proof: "b-deploy" },
-  { num: "0", label: "restart outages", context: "and fewer 5xx errors after fixing recurring Node.js restarts", proof: "b-rel" },
+  { num: "~85%", label: "faster API responses", context: "30s → under 4s for home-screen loads on login" },
+  { num: "<30", label: "5xx errors a day", context: "down from 200–300 after fixing recurring Node.js crashes" },
+  { num: "20+", label: "zero-downtime rollouts", context: "feature-flagged releases to 600k active users of a US internet provider" },
+  { num: "6", label: "people on the team I lead", context: "as Lead Developer at Dhan Technology Labs" },
 ];
 
 // Bullets are HTML so key numbers can carry the green highlight (<mark>)
-export type Role = { role: string; period: string; place?: string; promoted?: boolean; bullets: { id?: string; html: string }[] };
-export type Company = { company: string; span: string; current?: boolean; roles: Role[] };
+export type Role = { role: string; period: string; place?: string; promoted?: boolean; bullets: { html: string }[] };
+export type Company = { company: string; span: string; about?: string; current?: boolean; roles: Role[] };
 
 export const experience: Company[] = [
   {
     company: "Dhan Technology Labs",
     span: "09/2022 – Present",
+    about: "Service-based company. I lead the customer-facing application of a US-based internet service provider.",
     current: true,
     roles: [
       {
@@ -57,17 +57,17 @@ export const experience: Company[] = [
         place: "Remote",
         promoted: true,
         bullets: [
-          { id: "b-perf", html: "Architected an event-driven system that cut API response times <mark>~85% (30s → under 4s)</mark>, improving user retention through faster home-screen loads on login." },
-          { id: "b-deploy", html: "Designed and rolled out a portal-wide feature-flag system enabling <mark>zero-downtime deployments to 600k users</mark>, with safe experimentation and gradual rollouts to specific customer segments, without production redeploys." },
-          { id: "b-rel", html: "Found why our Node.js servers kept crashing and restarting in production, and fixed the root cause in how errors were handled, which <mark>eliminated outages and reduced failed requests (5xx errors)</mark>." },
-          { html: "Drove cross-functional buy-in with stakeholders and clients, pitching architectural improvements and surfacing trade-offs to win approval for optimized system designs." },
+          { html: "Architected an event-driven system that cut API response times <mark>~85% (30s → under 4s)</mark>, improving user retention through faster home-screen loads on login." },
+          { html: "Designed and rolled out a portal-wide feature-flag system enabling <mark>20+ zero-downtime rollouts to 600k users</mark>, with safe experimentation and gradual rollouts to specific customer segments, without production redeploys." },
+          { html: "Found why our Node.js servers kept crashing and restarting in production, and fixed the root cause in how errors were handled, which <mark>eliminated outages and cut failed requests (5xx errors) from 200–300 a day to under 30</mark>." },
+          { html: "Lead a <mark>team of 6</mark>. Drove cross-functional buy-in with stakeholders and clients, pitching architectural improvements and surfacing trade-offs to win approval for optimized system designs." },
         ],
       },
       {
         role: "Backend Developer",
         period: "09/2022 – 06/2025",
         bullets: [
-          { html: "Customized an existing Node-RED plugin to support a bespoke use case with no off-the-shelf solution, enabling rapid workflow automation <mark>within six months</mark>." },
+          { html: "<mark>Within six months of joining</mark>, rewrote an existing Node-RED plugin to support a use case it couldn't handle and no off-the-shelf tool covered." },
           { html: "Integrated application performance monitoring for GraphQL servers, surfacing real-time metrics in Kibana dashboards to identify and resolve critical API bottlenecks and improve throughput." },
         ],
       },
@@ -91,6 +91,20 @@ export const experience: Company[] = [
   },
 ];
 
+// Work case study: shown between Experience and Skills, with a before/after diagram
+export const caseStudy = {
+  context: "Dhan Technology Labs · customer-facing app for a US internet provider",
+  title: "Home screen: 30s → under 4s",
+  lead: "After login, customers waited up to 30 seconds for the home screen to load.",
+  rows: [
+    ["Every request went through the API gateway, the account service and the database, one after another, so each one added its own wait.", "One place to read.", "The home screen reads straight from MongoDB in a single query instead of walking that chain."],
+    ["Most of that data had not changed since the last visit, but it was fetched again on every login.", "Change events through Kafka.", "The main database publishes an event to Kafka whenever a record changes; a consumer picks it up and updates the copy in MongoDB."],
+    ["The new MongoDB copy started out empty.", "Backfilled through the same pipeline.", "Existing records were fetched from the APIs and sent as Kafka events, so the first copy was built the same way every later update arrives."],
+  ] as [string, string, string][],
+  tradeoff: "We keep a second database holding the same data, spending storage to make every login fast.",
+  result: "<mark>~85% faster home-screen loads (30s → under 4s)</mark>, improving retention, with every change still showing up as it happens.",
+};
+
 export type Skill = { name: string; icon?: IconType; mono?: string; color: string; primary?: boolean };
 export type SkillLayer = { label: string; note: string; items: Skill[] };
 
@@ -101,10 +115,10 @@ export const skillLayers: SkillLayer[] = [
     { name: "GraphQL", icon: SiGraphql, color: "#E10098" },
   ] },
   { label: "Languages", note: "what I write", items: [
-    { name: "Python", icon: SiPython, color: "#3776AB", primary: true },
-    { name: "JavaScript", icon: SiJavascript, color: "#F7DF1E" },
+    { name: "Node.js", icon: SiNodedotjs, color: "#5FA04E", primary: true },
     { name: "TypeScript", icon: SiTypescript, color: "#3178C6" },
-    { name: "Node.js", icon: SiNodedotjs, color: "#5FA04E" },
+    { name: "JavaScript", icon: SiJavascript, color: "#F7DF1E" },
+    { name: "Python", icon: SiPython, color: "#3776AB" },
   ] },
   { label: "Databases", note: "where data lives", items: [
     { name: "MongoDB", icon: SiMongodb, color: "#47A248" },
@@ -135,6 +149,7 @@ export type Project = {
   action: { label: string; href: string; kind: "download" | "open" };
   source: string;
   downloadsRepo?: string; // fact "downloads" is replaced by the live GitHub release count
+  layout: "rows" | "story" | "columns"; // rows: problem → fix per row; story: problem paragraph + feature grid; columns: problems beside fixes
   lead: string;
   pains: [string, string][]; // [letter, pain]
   solutions: [string, string, string][]; // [letter it answers, title, detail]
@@ -152,6 +167,7 @@ export const projects: Project[] = [
     action: { label: "Download APK", href: "https://github.com/GoutamkumarKoppolu/DigiLog/releases/latest/download/digilog.apk", kind: "download" },
     source: "https://github.com/GoutamkumarKoppolu/DigiLog",
     downloadsRepo: "GoutamkumarKoppolu/DigiLog",
+    layout: "rows",
     lead: "My bank balance never told me what I could actually spend.",
     pains: [
       ["A", "EMIs, rent and SIPs were still due this month."],
@@ -169,7 +185,7 @@ export const projects: Project[] = [
       ["E", "Savings pots.", "Savings grouped by goal that can never go below zero; \"Use savings\" draws from a pot instead of the balance."],
       ["F", "Local-first, no account.", "Everything lives on the phone in IndexedDB (via Dexie), wrapped as an Android app with Capacitor. No server, no SMS permission, fully offline."],
     ],
-    result: "One number I can trust before spending: <mark>usable balance</mark>. Shipped to real users with <mark>50+ downloads</mark> and <mark>6 releases in 3 days</mark> as feedback came in.",
+    result: "One number I can trust before spending: <mark>usable balance</mark>. Shipped to real users with <mark>50+ downloads</mark>, and new versions released based on their feedback.",
     details: [
       "Every figure has a documented formula, from current balance to usable salary, so the numbers are predictable.",
       "One-file backup and restore (save to phone or share to Drive); new versions install over the old APK without losing data.",
@@ -185,6 +201,7 @@ export const projects: Project[] = [
     stack: ["TypeScript", "Vite", "GitHub Actions", "GitHub Pages", "Firebase Analytics"],
     action: { label: "Open live site", href: "https://goutamkumarkoppolu.github.io/network-hospital-finder/", kind: "open" },
     source: "https://github.com/GoutamkumarKoppolu/network-hospital-finder",
+    layout: "story",
     lead: "When a family member needs admission, the first question is: is this hospital cashless under our insurance?",
     pains: [
       ["A", "The answer is buried on each insurer's own website, all different."],
@@ -213,6 +230,7 @@ export const projects: Project[] = [
     stack: ["HTML", "CSS", "JavaScript", "SVG animation", "PWA"],
     action: { label: "Open app", href: "https://goutamkumarkoppolu.github.io/physical-exercises/", kind: "open" },
     source: "https://github.com/GoutamkumarKoppolu/physical-exercises",
+    layout: "columns",
     lead: "A home exercise plan on paper is hard to stick to.",
     pains: [
       ["A", "I forgot how to do each exercise correctly."],
