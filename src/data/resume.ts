@@ -20,7 +20,7 @@ export const profile = {
   site: "https://goutamkoppolu.is-a.dev",
   name: "Goutam Kumar Koppolu",
   fullName: "Venkata Sai Goutam Kumar Koppolu",
-  title: "Lead Backend Developer",
+  title: "Senior Backend Engineer",
   roleNote: "Dhan Technology Labs",
   tagline:
     "4+ years designing and running production backends for 600k active users. I build fast, event-driven APIs with Node.js and GraphQL, and lead the team that ships them safely.",
